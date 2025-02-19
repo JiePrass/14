@@ -2,9 +2,12 @@
 // src/components/Form/TransportForm.jsx
 function TransportForm({ data, setData }) {
     const transportEmissionFactors = {
-        Mobil: 0.21,
-        Motor: 0.15,
-        Bus: 0.30,
+        "Mobil": 0.192,
+        "Mobil Listrik": 0.127,
+        "Motor": 0.068,
+        "Motor Listrik": 0.025,
+        "Bus": 0.105,
+        "Kereta Api": 0.41
     }
 
     const handleChange = (e) => {

@@ -15,19 +15,19 @@ export default function CarbonCalculator() {
     });
     const [electricityData, setElectricityData] = useState({
         va: "",
-        usage: "",
+        usage: "", // dalam kWh
     });
     const [foodData, setFoodData] = useState({
         foodType: "",
-        consumption: "",
+        consumption: "", // dalam kg
     });
     const [otherData, setOtherData] = useState({
         activity: "",
-        duration: "",
-        frequency: "",
+        duration: "",   // misalnya jam per kegiatan
+        frequency: "",  // misalnya frekuensi kegiatan (berapa kali)
     });
 
-    // State untuk hasil perhitungan emisi
+    // State untuk hasil perhitungan emisi (kg CO₂)
     const [emissions, setEmissions] = useState({
         transportation: 0,
         electricity: 0,
@@ -40,10 +40,14 @@ export default function CarbonCalculator() {
     // Perhitungan emisi real-time ketika data input berubah
     useEffect(() => {
         // --- Transportasi ---
+        // Faktor emisi dalam kg CO₂ per km
         const transportEmissionFactors = {
-            Mobil: 0.21,
-            Motor: 0.15,
-            Bus: 0.30,
+            "Mobil": 0.192,
+            "Mobil Listrik": 0.127,
+            "Motor": 0.068,
+            "Motor Listrik": 0.025,
+            "Bus": 0.105,
+            "Kereta Api": 0.41
         };
         let transportationEmission = 0;
         if (
@@ -58,20 +62,26 @@ export default function CarbonCalculator() {
         }
 
         // --- Listrik ---
+        // Faktor emisi listrik: 0.85 kg CO₂ per kWh
         let electricityEmission = 0;
         if (
             electricityData.usage !== "" &&
             !isNaN(electricityData.usage) &&
             Number(electricityData.usage) >= 0
         ) {
-            electricityEmission = Number(electricityData.usage) * 0.45;
+            electricityEmission = Number(electricityData.usage) * 0.85;
         }
 
         // --- Makanan ---
+        // Faktor emisi makanan dalam kg CO₂ per kg makanan
         const foodEmissionFactors = {
-            Daging: 0.15,
-            Sayuran: 0.05,
-            Buah: 0.03,
+            "Daging Sapi": 99.48,
+            "Daging Ayam": 12,
+            "Keju": 21,
+            "Tahu": 2,
+            "Kacang": 0.9,
+            "Sayuran": 2,  // contoh, sesuaikan dengan data yang diinginkan
+            "Buah": 3,     // contoh, sesuaikan dengan data yang diinginkan
         };
         let foodEmission = 0;
         if (
@@ -86,6 +96,7 @@ export default function CarbonCalculator() {
         }
 
         // --- Aktivitas Lainnya ---
+        // Faktor emisi untuk aktivitas lainnya (kg CO₂ per unit)
         const otherActivityEmissionMapping = {
             "Belanja Online": 0.5,
             "Penggunaan Gadget": 0.3,
@@ -153,8 +164,8 @@ export default function CarbonCalculator() {
             const responses = await Promise.all(
                 categoriesToSubmit.map((item) => api.post("/kalkulator", item))
             );
-            // Misalnya, kita ambil pesan dari response pertama untuk ditampilkan
-            const missionMessage = responses[0].data.message || "Data emisi berhasil disimpan!";
+            const missionMessage =
+                responses[0].data.message || "Data emisi berhasil disimpan!";
             Swal.fire({
                 title: "Berhasil!",
                 text: missionMessage,
@@ -198,19 +209,31 @@ export default function CarbonCalculator() {
                         <div className="mt-4 space-y-1">
                             <p className="text-gray-700">
                                 Transportasi:{" "}
-                                <span className="font-semibold">{emissions.transportation.toFixed(2)}</span> kg CO₂
+                                <span className="font-semibold">
+                                    {emissions.transportation.toFixed(2)}
+                                </span>{" "}
+                                kg CO₂
                             </p>
                             <p className="text-gray-700">
                                 Listrik:{" "}
-                                <span className="font-semibold">{emissions.electricity.toFixed(2)}</span> kg CO₂
+                                <span className="font-semibold">
+                                    {emissions.electricity.toFixed(2)}
+                                </span>{" "}
+                                kg CO₂
                             </p>
                             <p className="text-gray-700">
                                 Makanan:{" "}
-                                <span className="font-semibold">{emissions.food.toFixed(2)}</span> kg CO₂
+                                <span className="font-semibold">
+                                    {emissions.food.toFixed(2)}
+                                </span>{" "}
+                                kg CO₂
                             </p>
                             <p className="text-gray-700">
                                 Aktivitas Lainnya:{" "}
-                                <span className="font-semibold">{emissions.other.toFixed(2)}</span> kg CO₂
+                                <span className="font-semibold">
+                                    {emissions.other.toFixed(2)}
+                                </span>{" "}
+                                kg CO₂
                             </p>
                         </div>
                     </div>

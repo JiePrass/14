@@ -17,14 +17,41 @@ ChartJS.register(LineElement, Tooltip, Legend, Filler, CategoryScale, LinearScal
 
 const ComparisonChart = ({ currentData, previousData, timeFilter }) => {
     const chartData = useMemo(() => {
-        // Gunakan properti created_at untuk label
-        const labels = currentData.map(item => {
-            const d = new Date(item.created_at);
-            return isNaN(d.getTime()) ? "N/A" : d.toLocaleDateString("id-ID");
+        // Fungsi untuk mengelompokkan data berdasarkan tanggal
+        const groupByDate = (data) => {
+            return data.reduce((acc, item) => {
+                const d = new Date(item.created_at);
+                // Jika tanggal tidak valid, gunakan "N/A"
+                const key = isNaN(d.getTime()) ? "N/A" : d.toLocaleDateString("id-ID");
+                // Tambahkan value jika tanggal sudah ada, atau inisialisasi jika belum ada
+                acc[key] = (acc[key] || 0) + item.value;
+                return acc;
+            }, {});
+        };
+
+        // Kelompokkan data untuk currentData dan previousData
+        const currentGrouped = groupByDate(currentData);
+        const previousGrouped = groupByDate(previousData);
+
+        // Gabungkan semua tanggal unik dari kedua data
+        const allDatesSet = new Set([
+            ...Object.keys(currentGrouped),
+            ...Object.keys(previousGrouped)
+        ]);
+        let labels = Array.from(allDatesSet);
+
+        // Urutkan tanggal (jika memungkinkan)
+        labels.sort((a, b) => {
+            const dateA = new Date(a);
+            const dateB = new Date(b);
+            if (isNaN(dateA.getTime())) return 1;
+            if (isNaN(dateB.getTime())) return -1;
+            return dateA - dateB;
         });
 
-        const currentValues = currentData.map(item => item.value);
-        const previousValues = previousData.map(item => item.value);
+        // Buat array nilai berdasarkan label (jika tanggal tidak ada, nilai default 0)
+        const currentValues = labels.map(date => currentGrouped[date] || 0);
+        const previousValues = labels.map(date => previousGrouped[date] || 0);
 
         return {
             labels,

@@ -50,7 +50,7 @@ export default function Header() {
     };
 
     return (
-        <header className="bg-white py-4 px-6 flex justify-between items-center shadow-md fixed top-0 left-0 w-full z-50">
+        <header className="bg-white py-4 px-12 flex justify-between items-center shadow-md fixed top-0 left-0 w-full z-50">
             <Link to="/" className="max-w-48">
                 <img src="/assets/Logo/logo.svg" alt="Logo" />
             </Link>
@@ -70,10 +70,10 @@ export default function Header() {
             </nav>
 
             {/* User Profile Dropdown */}
-            <div className="relative" ref={dropdownRef}>
+            <div className="relative hidden md:block" ref={dropdownRef}>
                 {isAuthenticated ? (
                     <button onClick={() => setDropdownOpen(!dropdownOpen)} className="flex items-center space-x-3 relative z-20 focus:outline-none">
-                        <img src={user.profilePic} alt="User" className="w-10 h-10 rounded-full border" />
+                        <img src={user.profilePic || '/assets/icons/person.png'} alt="User" className="w-10 h-10 rounded-full" />
                         <span className="text-gray-700 font-medium hidden sm:block">{user.username}</span>
                     </button>
                 ) : (

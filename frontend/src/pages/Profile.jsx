@@ -82,7 +82,7 @@ export default function Profile({ handleLogout, emissionData }) {
                 <img
                     src={`http://localhost:2304${profile.profile_picture}` || "https://placehold.co/400x400"}
                     alt="Profile"
-                    className="w-40 h-40 rounded-full object-cover border-4 border-green-500"
+                    className="w-40 h-40 rounded-full object-cover"
                 />
                 <h1 className="text-3xl font-bold">{profile.name}</h1>
                 <p className="text-md text-gray-500">Joined Since: {joinedSince}</p>

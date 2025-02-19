@@ -10,9 +10,9 @@ function ProfilePicture({ profilePicture, size = "medium" }) {
     };
 
     return profilePicture ? (
-        <img src={profilePicture} alt="Profile" className={`${sizeClasses[size]} rounded-full object-cover border-2 border-white shadow-md`} />
+        <img src={`http://localhost:2304${profilePicture}`} alt="Profile" className={`${sizeClasses[size]} rounded-full object-cover shadow-md`} />
     ) : (
-        <div className={`${sizeClasses[size]} bg-gray-300 rounded-full flex items-center justify-center text-gray-700 text-sm border-2 border-white shadow-md`}>
+        <div className={`${sizeClasses[size]} bg-gray-300 rounded-full flex items-center justify-center text-gray-700 text-sm shadow-md`}>
             ?
         </div>
     );
@@ -24,6 +24,8 @@ function TopThreeCard({ rank, user }) {
         "bg-gray-300 text-gray-900 shadow-lg", // Rank 2
         "bg-orange-400 text-gray-900 shadow-md", // Rank 3
     ];
+
+    console.log(user)
 
     return (
         <div className={`flex flex-col items-center p-6 rounded-lg ${rankStyles[rank - 1]} w-1/3`}>

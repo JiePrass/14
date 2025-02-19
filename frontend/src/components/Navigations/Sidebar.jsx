@@ -22,7 +22,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen, isCollapsed, setIsCollapsed }) =
         { name: 'Papan Misi', href: '/missions', icon: <ClipboardDocumentListIcon className="w-6 h-6" /> },
         { name: 'Papan Peringkat', href: '/leaderboard', icon: <TrophyIcon className="w-6 h-6" /> },
         { name: 'Profil', href: '/profile', icon: <UserIcon className="w-6 h-6" /> },
-        { name: 'Kembali', href: '/home', icon: <ArrowLeftOnRectangleIcon className="w-6 h-6" /> }
+        { name: 'Kembali', href: '/', icon: <ArrowLeftOnRectangleIcon className="w-6 h-6" /> }
     ];
 
     return (

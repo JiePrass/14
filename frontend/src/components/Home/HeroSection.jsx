@@ -19,7 +19,7 @@ export default function HeroSection() {
     }, []);
 
     return (
-        <div className="relative h-[400px] md:h-[600px] flex items-end p-6 md:p-10 rounded-lg overflow-hidden">
+        <div className="relative h-[500px] md:h-[600px] flex items-end p-6 md:p-10 rounded-lg overflow-hidden">
             {/* Background Carousel */}
             <div className="absolute inset-0 w-full h-full">
                 {images.map((img, index) => (
